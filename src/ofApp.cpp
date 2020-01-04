@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    
     //画像を表示するときに中心を指定するモードを設定
     ofSetRectMode(OF_RECTMODE_CENTER);
     
@@ -68,11 +68,11 @@ void ofApp::setup(){
     bottomCenter6 = new ofMole(1040, 810);
     bottomCenter7 = new ofMole(1200, 810);
     bottomLeft = new ofMole(1360, 810);
-
+    
     //スコアを0に
     score = 0;
     star = 0;//②
-   
+    
     //state = 0;
 }
 
@@ -83,82 +83,82 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     /*timer = ofGetElapsedTimeMillis() / 1000 - time;
+     
+     nextState= 0;
+     
+     if(state == 0){ nextState = game(); }
+     else if(state == 1){ nextState = ending(); }
+     
+     if(state != nextState){ time = ofGetElapsedTimeMillis() / 1000; } // 状態が遷移するので、現在の状態になった時刻を更新する
+     state = nextState;*/
     
-    nextState= 0;
+    if (gameOver == false) {//①
+        //ofBackground(0);
+        ofBackground(33,215,102);
+        ofHideCursor();
+        
+        displayMoles();
+        displayTimeScore();
+        checkTimeOver();
+        
+        //ハンマーを表示
+        hammer.draw(mouseX, mouseY);
+        hosi.draw(1305, 100);//②
+        
+        topRight->checkHit();
+        topCenter1->checkHit();
+        topCenter2->checkHit();
+        topCenter3->checkHit();
+        topCenter4->checkHit();
+        topCenter5->checkHit();
+        topCenter6->checkHit();
+        topCenter7->checkHit();
+        
+        mid1Right->checkHit();
+        mid1Center1->checkHit();
+        mid1Center2->checkHit();
+        mid1Center3->checkHit();
+        mid1Center4->checkHit();
+        mid1Center5->checkHit();
+        mid1Center6->checkHit();
+        mid1Center7->checkHit();
+        mid1Left->checkHit();
+        
+        mid2Right->checkHit();
+        mid2Center1->checkHit();
+        mid2Center2->checkHit();
+        mid2Center3->checkHit();
+        mid2Center4->checkHit();
+        mid2Center5->checkHit();
+        mid2Center6->checkHit();
+        mid2Center7->checkHit();
+        mid2Left->checkHit();
+        
+        mid3Right->checkHit();
+        mid3Center1->checkHit();
+        mid3Center2->checkHit();
+        mid3Center3->checkHit();
+        mid3Center4->checkHit();
+        mid3Center5->checkHit();
+        mid3Center6->checkHit();
+        mid3Center7->checkHit();
+        mid3Left->checkHit();
+        
+        bottomRight->checkHit();
+        bottomCenter1->checkHit();
+        bottomCenter2->checkHit();
+        bottomCenter3->checkHit();
+        bottomCenter4->checkHit();
+        bottomCenter5->checkHit();
+        bottomCenter6->checkHit();
+        bottomCenter7->checkHit();
+        bottomLeft->checkHit();
+    }
     
-    if(state == 0){ nextState = game(); }
-    else if(state == 1){ nextState = ending(); }
-    
-    if(state != nextState){ time = ofGetElapsedTimeMillis() / 1000; } // 状態が遷移するので、現在の状態になった時刻を更新する
-    state = nextState;*/
-    
- if (gameOver == false) {//①
-    //ofBackground(0);
-    ofBackground(33,215,102);
-    ofHideCursor();
-    
-    displayMoles();
-    displayTimeScore();
-    checkTimeOver();
-    
-    //ハンマーを表示
-    hammer.draw(mouseX, mouseY);
-    hosi.draw(1305, 100);//②
-    
-    topRight->checkHit();
-    topCenter1->checkHit();
-    topCenter2->checkHit();
-    topCenter3->checkHit();
-    topCenter4->checkHit();
-    topCenter5->checkHit();
-    topCenter6->checkHit();
-    topCenter7->checkHit();
-    
-    mid1Right->checkHit();
-    mid1Center1->checkHit();
-    mid1Center2->checkHit();
-    mid1Center3->checkHit();
-    mid1Center4->checkHit();
-    mid1Center5->checkHit();
-    mid1Center6->checkHit();
-    mid1Center7->checkHit();
-    mid1Left->checkHit();
-    
-    mid2Right->checkHit();
-    mid2Center1->checkHit();
-    mid2Center2->checkHit();
-    mid2Center3->checkHit();
-    mid2Center4->checkHit();
-    mid2Center5->checkHit();
-    mid2Center6->checkHit();
-    mid2Center7->checkHit();
-    mid2Left->checkHit();
-    
-    mid3Right->checkHit();
-    mid3Center1->checkHit();
-    mid3Center2->checkHit();
-    mid3Center3->checkHit();
-    mid3Center4->checkHit();
-    mid3Center5->checkHit();
-    mid3Center6->checkHit();
-    mid3Center7->checkHit();
-    mid3Left->checkHit();
-    
-    bottomRight->checkHit();
-    bottomCenter1->checkHit();
-    bottomCenter2->checkHit();
-    bottomCenter3->checkHit();
-    bottomCenter4->checkHit();
-    bottomCenter5->checkHit();
-    bottomCenter6->checkHit();
-    bottomCenter7->checkHit();
-    bottomLeft->checkHit();
- }
-    
- else {//gameOver is true//①
-     drawReplayOption();
-     checkReplayHit();
- }
+    else {//gameOver is true//①
+        drawReplayOption();
+        checkReplayHit();
+    }
     
 }
 
@@ -306,8 +306,8 @@ void ofApp::checkReplayHit(){//①
 
 //--------------------------------------------------------------
 void ofApp::displayTimeScore(){
-     font.drawString("Score: " + ofToString(score) + "\n      × " + ofToString(star), 1280,75);
-     //font.drawString("Time: " + ofToString(timeMax - timer) + "\nScore: " + ofToString(score), 1280,75);
+    font.drawString("Score: " + ofToString(score) + "\n      × " + ofToString(star), 1280,75);
+    //font.drawString("Time: " + ofToString(timeMax - timer) + "\nScore: " + ofToString(score), 1280,75);
 }
 
 
@@ -386,12 +386,12 @@ bool ofApp::isFinished() {//①
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    
 }
 
 //--------------------------------------------------------------
@@ -404,7 +404,7 @@ void ofApp::mouseMoved(int x, int y){//①
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
@@ -414,30 +414,30 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseExited(int x, int y){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+    
 }

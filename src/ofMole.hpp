@@ -14,7 +14,7 @@
 #define LENGTH 5 //読み込む画像の枚数
 
 class ofMole {
-  public:
+public:
     ofMole(float x, float y);
     void resetTimers();
     void update();

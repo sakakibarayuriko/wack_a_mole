@@ -34,7 +34,7 @@ void ofMole::resetTimers() {
 void ofMole::update() {
     // increase amount of time in our current currentMole
     currentMoleTime++;//隠れ時間増
-
+    
     // have we gone over our total currentMole time?
     if (currentMoleTime >= totalCurrentMoleTime)//隠れ時間＞＝出現時間
     {
@@ -50,16 +50,16 @@ void ofMole::update() {
                     ((ofApp*) ofGetAppPtr())->star = 0;
                 }
                 else{
-                currentMole = (int) ofRandom(0, 2);
+                    currentMole = (int) ofRandom(0, 2);
                 }
             }
             
             else if(((ofApp*) ofGetAppPtr())->timer >= 5 && ((ofApp*) ofGetAppPtr())->timer <= 12){//①
-            currentMole = (int) ofRandom(0, 3);
+                currentMole = (int) ofRandom(0, 3);
             }
             
             else if(((ofApp*) ofGetAppPtr())->timer >= 13 && ((ofApp*) ofGetAppPtr())->timer <= 15){//①
-            currentMole = 2;
+                currentMole = 2;
             }
             
             
@@ -75,7 +75,7 @@ void ofMole::update() {
 
 void ofMole::display() {
     moles[currentMole].draw(xPos, yPos);
-    }
+}
 
 void ofMole::checkHit() {
     //generic
@@ -84,7 +84,7 @@ void ofMole::checkHit() {
         if (currentMole > 0 && currentMole < 2) {
             currentMole = 0;
             ((ofApp*) ofGetAppPtr())->score++;
-      }
+        }
         if (currentMole == 3) {//②
             currentMole = 0;
             ((ofApp*) ofGetAppPtr())->score++;
@@ -95,7 +95,7 @@ void ofMole::checkHit() {
             currentMole = 0;
             ((ofApp*) ofGetAppPtr())->score += 5;
         }
-   }
+    }
 }
 
 void ofMole::moleGameOver() {//①
