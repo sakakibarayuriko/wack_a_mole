@@ -1,6 +1,5 @@
 //
 //  Mole.cpp
-//  emptyExample
 //
 //  Created by 榊原ゆり子 on 2018/07/16.
 //
@@ -12,93 +11,101 @@ ofMole::ofMole(float x, float y) {
     xPos = x;
     yPos = y;
     
-    //start it empty
+    //穴が表示される
     currentMole = 0;
     
-    //load the images
+    //モグラの画像読み込み
     for (int i = 0; i < LENGTH; i++) {
         moles[i].load("mole" + ofToString(i) + ".png");
     }
     
+    //時間セット
     resetTimers();
 }
 
 void ofMole::resetTimers() {
-    // pick a random amount of time to stay in this currentMole
-    totalCurrentMoleTime = int(ofRandom(50, 200));//出現時間
-    
-    // reset our current counter
-    currentMoleTime = 0;//隠れ時間
+    //出現時間
+    appearanceTime = int(ofRandom(50, 600));
+    //隠れ時間
+    hiddenTime = 0;
 }
 
 void ofMole::update() {
-    // increase amount of time in our current currentMole
-    currentMoleTime++;//隠れ時間増
+    //隠れ時間増える
+    hiddenTime++;
     
-    // have we gone over our total currentMole time?
-    if (currentMoleTime >= totalCurrentMoleTime)//隠れ時間＞＝出現時間
-    {
-        // switch!
+    //隠れ時間>=出現時間
+    if (hiddenTime >= appearanceTime) {
+        //穴が表示されている時
         if (currentMole == 0) {
-            
-            if(((ofApp*) ofGetAppPtr())->timer >= 0 && ((ofApp*) ofGetAppPtr())->timer <= 4){//①
-                if(((ofApp*) ofGetAppPtr())->score % 30 == 0 && ((ofApp*) ofGetAppPtr())->score > 0){//30点間隔//②
+            //タイマーが0秒〜4秒しか進んでいない時
+            if(((ofApp*) ofGetAppPtr())->timer >= 0 && ((ofApp*) ofGetAppPtr())->timer <= 4) {
+                //30点間隔
+                if(((ofApp*) ofGetAppPtr())->score % 30 == 0 && ((ofApp*) ofGetAppPtr())->score > 0) {
+                    //星を持ったモグラが現れる
                     currentMole = 3;
                 }
-                else if(((ofApp*) ofGetAppPtr())->star == 10){//②
+                //星が10個集まった
+                else if(((ofApp*) ofGetAppPtr())->starScore == 10) {
+                    //王冠のモグラが現れる
                     currentMole = 4;
-                    ((ofApp*) ofGetAppPtr())->star = 0;
+                    //星がリセットされる
+                    ((ofApp*) ofGetAppPtr())->starScore = 0;
                 }
                 else{
+                    //穴か普通のモグラがランダムで表示される
                     currentMole = (int) ofRandom(0, 2);
                 }
             }
-            
-            else if(((ofApp*) ofGetAppPtr())->timer >= 5 && ((ofApp*) ofGetAppPtr())->timer <= 12){//①
+            //タイマーが5秒〜12秒進んだ時
+            else if(((ofApp*) ofGetAppPtr())->timer >= 5 && ((ofApp*) ofGetAppPtr())->timer <= 12) {
+                //怒ったモグラか穴が表示される
                 currentMole = (int) ofRandom(0, 3);
             }
-            
-            else if(((ofApp*) ofGetAppPtr())->timer >= 13 && ((ofApp*) ofGetAppPtr())->timer <= 15){//①
+            //タイマーが13秒〜15秒進んだ時
+            else if(((ofApp*) ofGetAppPtr())->timer >= 13 && ((ofApp*) ofGetAppPtr())->timer <= 15) {
+                //怒ったモグラが表示される
                 currentMole = 2;
             }
-            
-            
-        }
-        else {
+        } else {
+            //穴が表示される
             currentMole = 0;
         }
-        
-        // reset timers
+        //時間セット
         resetTimers();
     }
 }
 
 void ofMole::display() {
+    //描写されるモグラの種類と場所
     moles[currentMole].draw(xPos, yPos);
 }
 
 void ofMole::checkHit() {
-    //generic
+    //ハンマーがモグラに当たった時
     if (ofDist(((ofApp*) ofGetAppPtr())->mouseX, ((ofApp*) ofGetAppPtr())->mouseY, xPos, yPos) < 70) {
-        //if good
-        if (currentMole > 0 && currentMole < 2) {
+        //普通のモグラか怒ったモグラ
+        if (currentMole == 1 || currentMole == 2) {
+            //穴が表示される
             currentMole = 0;
+            //1点加算される
             ((ofApp*) ofGetAppPtr())->score++;
         }
-        if (currentMole == 3) {//②
+        //星を持ったモグラ
+        if (currentMole == 3) {
+            //穴が表示される
             currentMole = 0;
+            //1点加算される
             ((ofApp*) ofGetAppPtr())->score++;
-            ((ofApp*) ofGetAppPtr())->star++;
-            //星集め 5つ集まると5点のモグラが発生
+            //星が加算される
+            ((ofApp*) ofGetAppPtr())->starScore++;
         }
-        if (currentMole == 4) {//②
+        //王冠のモグラ
+        if (currentMole == 4) {
+            //穴が表示される
             currentMole = 0;
+            //5点加算される
             ((ofApp*) ofGetAppPtr())->score += 5;
         }
     }
 }
-
-void ofMole::moleGameOver() {//①
-    ((ofApp*) ofGetAppPtr())->gameOver = true;
-}
-

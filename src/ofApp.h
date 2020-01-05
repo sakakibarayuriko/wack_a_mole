@@ -9,19 +9,16 @@ public:
     void update();
     void draw();
     void displayMoles();
-    void checkTimeOver();//①
-    void drawReplayOption();//①
-    void checkReplayHit();//①
+    void checkTimeOver();
+    void drawReplayOption();
+    void checkReplayHit();
     void displayTimeScore();
-    void reset();//①
-    bool isFinished();//①
-    
-    int game();
-    int ending();
+    void reset();
+    bool isFinished();
     
     void keyPressed(int key);
     void keyReleased(int key);
-    void mouseMoved(int x, int y);//①
+    void mouseMoved(int x, int y);
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
@@ -34,8 +31,7 @@ public:
     
     ofTrueTypeFont font;
     ofImage hammer;
-    ofImage hosi;//②
-    
+    ofImage star;
     ofMole *topRight;
     ofMole *topCenter1;
     ofMole *topCenter2;
@@ -85,16 +81,12 @@ public:
     ofMole *bottomCenter7;
     ofMole *bottomLeft;
     
-    bool gameOver;//①
+    bool gameOver;
     
     int score;
-    int star;//②
+    int starScore;
     
-    int timer;//①
-    int time;//①
-    int timeMax; //①
-    
-    int state;    // 現在の状態 (0=タイトル, 1=ゲーム, 2=エンディング)
-    int nextState;
-    
+    int timer;
+    int time;
+    int timeMax;
 };

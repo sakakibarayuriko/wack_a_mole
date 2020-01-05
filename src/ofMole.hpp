@@ -1,6 +1,5 @@
 //
 //  Mole.hpp
-//  emptyExample
 //
 //  Created by 榊原ゆり子 on 2018/07/16.
 //
@@ -11,7 +10,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 
-#define LENGTH 5 //読み込む画像の枚数
+#define LENGTH 5
 
 class ofMole {
 public:
@@ -20,7 +19,6 @@ public:
     void update();
     void display();
     void checkHit();
-    void moleGameOver();
     
     float xPos;
     float yPos;
@@ -28,15 +26,10 @@ public:
     ofImage moles[LENGTH];
     
     int currentMole;
-    
-    // how long to stay in this currentMole
-    int totalCurrentMoleTime;
-    
-    // how long have we been in this currentMole?
-    int currentMoleTime;
-    
-    int score, star;//②
-    
+    int appearanceTime;
+    int hiddenTime;
+    int score;
+    int starScore;
 };
 
 #endif /* Mole_hpp */

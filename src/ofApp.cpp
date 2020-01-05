@@ -3,21 +3,23 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
-    //画像を表示するときに中心を指定するモードを設定
     ofSetRectMode(OF_RECTMODE_CENTER);
     
-    //load image
+    //画像読み込み
     hammer.load("hammer.png");
-    hosi.load("star.png");//②
+    star.load("star.png");
     
-    //loadfont
+    //フォント読み込み
     ofTrueTypeFont::setGlobalDpi(72);
     font.load("SFNSText.ttf", 30);
     
-    //set param in new Timer to amount of seconds you want the game to last
-    time = ofGetElapsedTimeMillis()/1000;//①
-    timeMax = 15;//①
+    //時間初期化
+    time = ofGetElapsedTimeMillis()/1000;
+    timeMax = 15;
+    
+    //スコアセット
+    score = 0;
+    starScore = 0;
     
     //穴の位置
     topRight = new ofMole(80, 90);
@@ -68,12 +70,6 @@ void ofApp::setup(){
     bottomCenter6 = new ofMole(1040, 810);
     bottomCenter7 = new ofMole(1200, 810);
     bottomLeft = new ofMole(1360, 810);
-    
-    //スコアを0に
-    score = 0;
-    star = 0;//②
-    
-    //state = 0;
 }
 
 //--------------------------------------------------------------
@@ -82,29 +78,22 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    /*timer = ofGetElapsedTimeMillis() / 1000 - time;
-     
-     nextState= 0;
-     
-     if(state == 0){ nextState = game(); }
-     else if(state == 1){ nextState = ending(); }
-     
-     if(state != nextState){ time = ofGetElapsedTimeMillis() / 1000; } // 状態が遷移するので、現在の状態になった時刻を更新する
-     state = nextState;*/
-    
-    if (gameOver == false) {//①
-        //ofBackground(0);
+    //タイマー
+    timer = ofGetElapsedTimeMillis() / 1000 - time;
+    //ゲーム中
+    if (gameOver == false) {
+        //画面描写
         ofBackground(33,215,102);
         ofHideCursor();
-        
         displayMoles();
         displayTimeScore();
+        star.draw(1305, 100);
+        hammer.draw(mouseX, mouseY);
+        
+        //終了判定
         checkTimeOver();
         
-        //ハンマーを表示
-        hammer.draw(mouseX, mouseY);
-        hosi.draw(1305, 100);//②
-        
+        //当たり判定
         topRight->checkHit();
         topCenter1->checkHit();
         topCenter2->checkHit();
@@ -154,16 +143,18 @@ void ofApp::draw(){
         bottomCenter7->checkHit();
         bottomLeft->checkHit();
     }
-    
-    else {//gameOver is true//①
+    //ゲームオーバー
+    else {
+        //画面描写
         drawReplayOption();
+        //リプレイ
         checkReplayHit();
     }
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::displayMoles() {
+    //モグラ表示
     topRight->display();
     topCenter1->display();
     topCenter2->display();
@@ -213,6 +204,7 @@ void ofApp::displayMoles() {
     bottomCenter7->display();
     bottomLeft->display();
     
+    //モグラのモーション
     topRight->update();
     topCenter1->update();
     topCenter2->update();
@@ -264,19 +256,19 @@ void ofApp::displayMoles() {
 }
 
 //--------------------------------------------------------------
-void ofApp::checkTimeOver(){//①
+void ofApp::checkTimeOver(){
+    //終了している場合
     if (isFinished()) {
-        mid2Center4->moleGameOver();
+        gameOver = true;
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::drawReplayOption(){//①
+void ofApp::drawReplayOption(){
+    //画面描写
     ofBackground(0);
     ofShowCursor();
-    font.drawString("Game Over"/*\nScore = " + ofToString(score)*/, 720 - 83, 450);
-    
-    //リプレイ
+    font.drawString("Game Over", 720 - 83, 450);
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofSetColor(255);
     ofFill();
@@ -289,16 +281,19 @@ void ofApp::drawReplayOption(){//①
 }
 
 //--------------------------------------------------------------
-void ofApp::checkReplayHit(){//①
-    //if click on replay
+void ofApp::checkReplayHit(){
+    //リプレイボタンにマウスが当たった時
     if (mouseX > (720 - 75) &&  mouseX < (720 + 75) && mouseY < 618 + 25 && mouseY > 618 - 25) {
+        //リプレイボタン描写
         ofSetColor(0);
         ofFill();
         ofDrawRectangle(720, 618, 150, 50);
         ofSetColor(255);
         ofFill();
         font.drawString("replay", 720 - 43, 628);
+        //リプレイボタンを押した時
         if (ofGetMousePressed()) {
+            //ゲーム再スタート
             reset();
         }
     }
@@ -306,18 +301,21 @@ void ofApp::checkReplayHit(){//①
 
 //--------------------------------------------------------------
 void ofApp::displayTimeScore(){
-    font.drawString("Score: " + ofToString(score) + "\n      × " + ofToString(star), 1280,75);
-    //font.drawString("Time: " + ofToString(timeMax - timer) + "\nScore: " + ofToString(score), 1280,75);
+    //スコア描写
+    font.drawString("Score: " + ofToString(score) + "\n      × " + ofToString(starScore), 1280,75);
 }
-
 
 //--------------------------------------------------------------
 void ofApp::reset(){
-    score = 0;
-    star = 0;
-    timeMax = 15;//①
-    time = ofGetElapsedTimeMillis()/1000;//①
+    //時間初期化
+    time = ofGetElapsedTimeMillis()/1000;
+    timeMax = 15;
     
+    //スコアセット
+    score = 0;
+    starScore = 0;
+    
+    //穴表示
     topRight->currentMole = 0;
     topCenter1->currentMole = 0;
     topCenter2->currentMole = 0;
@@ -368,15 +366,15 @@ void ofApp::reset(){
     bottomCenter7->currentMole = 0;
     bottomLeft->currentMole = 0;
     
+    //ゲーム再スタート
     gameOver = false;
-    draw();
-    
 }
 
 //--------------------------------------------------------------
-bool ofApp::isFinished() {//①
-    timer = ofGetElapsedTimeMillis()/1000 - time; //seconds
+bool ofApp::isFinished() {
+    //タイマー>15秒
     if (timer > timeMax) {
+        //ゲームオーバー
         return true;
     }
     else {
@@ -395,11 +393,9 @@ void ofApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y){//①
-    time = 0;
-    timer = 0;
-    time = ofGetElapsedTimeMillis()/1000; //seconds
-    timer = ofGetElapsedTimeMillis()/1000 - time; //seconds
+void ofApp::mouseMoved(int x, int y){
+    //時間初期化
+    time = ofGetElapsedTimeMillis()/1000;
 }
 
 //--------------------------------------------------------------
