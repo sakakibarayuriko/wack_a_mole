@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 
-#define LENGTH 5
+#define TYPE_LENGTH 5
 
 class ofMole {
 public:
@@ -23,7 +23,7 @@ public:
     float xPos;
     float yPos;
     
-    ofImage moles[LENGTH];
+    ofImage moles[TYPE_LENGTH];
     
     int currentMole;
     int appearanceTime;

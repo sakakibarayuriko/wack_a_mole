@@ -15,7 +15,7 @@ ofMole::ofMole(float x, float y) {
     currentMole = 0;
     
     //モグラの画像読み込み
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < TYPE_LENGTH; i++) {
         moles[i].load("mole" + ofToString(i) + ".png");
     }
     
@@ -25,7 +25,7 @@ ofMole::ofMole(float x, float y) {
 
 void ofMole::resetTimers() {
     //出現時間
-    appearanceTime = int(ofRandom(50, 600));
+    appearanceTime = ofRandom(50, 600);
     //隠れ時間
     hiddenTime = 0;
 }
@@ -54,13 +54,13 @@ void ofMole::update() {
                 }
                 else{
                     //穴か普通のモグラがランダムで表示される
-                    currentMole = (int) ofRandom(0, 2);
+                    currentMole = ofRandom(0, 2);
                 }
             }
             //タイマーが5秒〜12秒進んだ時
             else if(((ofApp*) ofGetAppPtr())->timer >= 5 && ((ofApp*) ofGetAppPtr())->timer <= 12) {
                 //怒ったモグラか穴が表示される
-                currentMole = (int) ofRandom(0, 3);
+                currentMole = ofRandom(0, 3);
             }
             //タイマーが13秒〜15秒進んだ時
             else if(((ofApp*) ofGetAppPtr())->timer >= 13 && ((ofApp*) ofGetAppPtr())->timer <= 15) {
@@ -84,28 +84,37 @@ void ofMole::display() {
 void ofMole::checkHit() {
     //ハンマーがモグラに当たった時
     if (ofDist(((ofApp*) ofGetAppPtr())->mouseX, ((ofApp*) ofGetAppPtr())->mouseY, xPos, yPos) < 70) {
-        //普通のモグラか怒ったモグラ
-        if (currentMole == 1 || currentMole == 2) {
-            //穴が表示される
-            currentMole = 0;
-            //1点加算される
-            ((ofApp*) ofGetAppPtr())->score++;
-        }
-        //星を持ったモグラ
-        if (currentMole == 3) {
-            //穴が表示される
-            currentMole = 0;
-            //1点加算される
-            ((ofApp*) ofGetAppPtr())->score++;
-            //星が加算される
-            ((ofApp*) ofGetAppPtr())->starScore++;
-        }
-        //王冠のモグラ
-        if (currentMole == 4) {
-            //穴が表示される
-            currentMole = 0;
-            //5点加算される
-            ((ofApp*) ofGetAppPtr())->score += 5;
+        switch(currentMole) {
+            //普通のモグラ
+            case 1:
+                //穴が表示される
+                currentMole = 0;
+                //1点加算される
+                ((ofApp*) ofGetAppPtr())->score++;
+                break;
+            //怒ったモグラ
+            case 2:
+                //穴が表示される
+                currentMole = 0;
+                //1点加算される
+                ((ofApp*) ofGetAppPtr())->score++;
+                break;
+            //星を持ったモグラ
+            case 3:
+                //穴が表示される
+                currentMole = 0;
+                //1点加算される
+                ((ofApp*) ofGetAppPtr())->score++;
+                //星が加算される
+                ((ofApp*) ofGetAppPtr())->starScore++;
+            //王冠のモグラ
+            case 4:
+                //穴が表示される
+                currentMole = 0;
+                //5点加算される
+                ((ofApp*) ofGetAppPtr())->score += 5;
+            default:
+                break;
         }
     }
 }
