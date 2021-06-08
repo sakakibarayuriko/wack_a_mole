@@ -1,3 +1,3 @@
-# wack_a_mole
+# whack-a-mole
 
 モグラ叩きゲーム
